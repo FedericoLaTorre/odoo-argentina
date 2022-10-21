@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 <data>
-
-<record id="report_invoice_format" model="report.paperformat">
-    <field name="name">Report invoice format</field>
-    <field name="default" eval="True"/>
-    <field name="format">custom</field>
-    <field name="page_height">297</field>
-    <field name="page_width">210</field>
-    <field name="orientation">Portrait</field>
-    <field name="margin_top">38</field>
-    <field name="margin_bottom">34</field>
-    <field name="margin_left">7</field>
-    <field name="margin_right">7</field>
-    <field name="header_line" eval="False"/>
-    <field name="header_spacing">33</field>
-    <field name="dpi">90</field>
-</record>
-
 <template id="report_fe_invoice_document">
 
         <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
@@ -35,140 +18,140 @@
         <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
           <!--HEADER-->
           <div class="header"  style="margin-bottom: 0px !important;">
-            <div class="row" style="border: 1px solid black; border-radius: 10px; margin-bottom: 0px !important;">
+            <div class="row m-0" style="border: 1px solid black; margin-bottom: 0px !important;">
                 <!--COMPANY LOGO-->
-                <div class="col-5 text-left">
-                  <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-width: 230px; max-height: 30px; margin-top: 20px; margin-bottom: 0px;" alt="Logo"/>
-                  <!--END COMPANY LOGO-->
-                  <!--FE-->
-                  <!--MY COMPANY-->
-                  <div class="col-" style="margin-top: 0px">
-                    <span t-field="o.company_id.partner_id.name" style="font-size: 10px;"/>
-                  </div>
-                  <div class="col-" style="margin-top: 0px; line-height: 0%; font-size: 10px;">
-                    <span t-field="o.company_id.partner_id.street" />
-                    <strong style="font-weight: normal;">(</strong>
-                    <span t-field="o.company_id.partner_id.zip"/>
-                    <strong style="font-weight: normal;">)</strong>
-                  </div>
-                  <div class="col-" style="margin-top: 11px; line-height: 0%; font-size: 10px;">
-                    <span t-field="o.company_id.partner_id.city" />
-                    <strong style="font-weight: normal;"> - </strong>
-                    <span t-field="o.company_id.partner_id.state_id"/>
-                    <strong style="font-weight: normal;"> - </strong>
-                    <span t-field="o.company_id.partner_id.country_id"/>
-                  </div>
-                  <div class="col-" style="margin-top: 11px; line-height: 0%; font-size: 10px;">
-                    <strong style="font-weight: normal;">Tel.: </strong>
-                    <span t-field="o.company_id.partner_id.phone"/>
-                  </div>
-                  <div class="col-" style="margin-top: 11px; line-height: 0%; font-size: 10px;">
-                    <span t-field="o.company_id.partner_id.email"/>
-                  </div>
-                  <div class="col-" style="margin-top: 11px; line-height: 0%; font-size: 10px;">
-                    <span t-field="o.company_id.partner_id.website"/>
-                  </div>
-                  <div class="col-" style="margin-top: 11px; line-height: 0%; font-size: 10px;">
-                    <strong style="font-weight: normal;">I.V.A.: </strong>
-                    <span t-field="o.company_id.partner_id.l10n_ar_afip_responsibility_type_id.name"/>
-                  </div>
-                  <div class="col-" style="min-height: 10px;">
-                  </div>
-                </div><!--END MY COMPANY-->
+                <div class="col-3 text-left">
+                    <!--<img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="display: block !important; float: left !important; position: absolute !important; margin-top: 0px !important; margin-bottom: 0px !important; top: 10px !important; left: 10px !important; bottom: auto !important; max-height: 95px;"/>-->
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-width: 230px; max-height: 60px; margin-top: 30px;" alt="Logo"/>
+                </div><!--END COMPANY LOGO-->
+                <!--FE-->
+                <div class="col-2 text-center" style="margin-top: 42px !important;">
+                  <span style="font-size: 11px; font-weight: bold;">Comprobante<br/>electrónico</span>
+                </div>
                 <!--END FE-->
                 <!--DOCUMENT LETTER-->
                 <div class="col-2 text-center">
-                  <div class="card mx-auto" style="margin:0px; width:80px;">
-                    <div class="card-header" style="font-size: 48px;padding:0px;">
-                      <span t-field="o.l10n_latam_document_type_id.l10n_ar_letter"/>
-                    </div>
-                    <div class="card-body" style="height: 20px;padding:0px;">cod. 
-                      <span t-field="o.l10n_latam_document_type_id.code"/>
-                    </div>
+                  <div class="card" style="margin:0px;">
+                    <div class="card-header" style="font-size: 48px;padding:0px;"><span t-field="o.l10n_latam_document_type_id.l10n_ar_letter"/></div>
+                    <div class="card-body" style="height: 20px;padding:0px;">cod. <span t-field="o.l10n_latam_document_type_id.code"/></div>
                   </div>
                 </div><!--END DOCUMENT LETTER-->
                 <!--TIPO,NRO Y FECHA FACTURA-->
-                <div class="col-5 text-left" name="company_address" style="padding-left: 120px !important;">
-                  <span t-field="o.l10n_latam_document_type_id.name" style="font-size: 14px; font-weight: bold;"/>
-                  <br/>
-                  <span t-if="o.state == 'posted' or o.state == 'draft'">
-                          <span t-field="o.display_name"/>
-                  </span>
-                  <p>
+                <div class="col-5 text-left" name="company_address" style="padding-left: 80px !important;">
+                  <h6>
+			  <span t-field="o.l10n_latam_document_type_id.name"></span>
+                  </h6>
                   <span t-if="o.state == 'posted' or o.state == 'draft'">
                           Fecha: <span t-field="o.invoice_date"/><br/>
                   </span>
-                  </p>
-                  <div class="col- text-left" style="margin-top: 10px; line-height: 0.5%; font-size: 10px;">
-                    <p>
-                    <strong>CUIT: </strong>
-                    <span t-field="o.company_id.partner_id.vat"/>
-                    </p>
-                    <p>
-                    <strong>Ing. Brutos: </strong>
-                    <span t-field="o.company_id.partner_id.l10n_ar_gross_income_number"/>
-                    </p>
-                    <p>
-                    <strong>Inicio de actividades: </strong>
-                    <span t-field="o.company_id.l10n_ar_afip_start_date"/>
-                    </p>
-                  </div>
+                  <span t-if="o.state == 'posted' or o.state == 'draft'">
+                            <span t-field="o.display_name"/>
+                  </span>
+                  <p style="font-size: 8px;">
+                    <strong>Tipo de Documento </strong>
+                     <span t-field="o.l10n_latam_document_type_id.name"/>
+                   </p>
                 </div>
-            </div><!--END DATOS FACTURA-->
+                <!--END DATOS FACTURA-->
+            </div>
+            <div class="row m-0" style="border: 1px solid black; margin-top: 2px !important; margin-bottom: 0px !important;">
+                <div  class="col-8" t-if="o.move_type == 'out_invoice' and (o.state == 'posted') and o.l10n_ar_afip_service_start and o.l10n_ar_afip_service_end">
+                    <strong>Período facturado desde:</strong>
+                    <span t-if="o.l10n_ar_afip_service_start">
+                      <span t-field="o.l10n_ar_afip_service_start"  t-options="{'format': 'dd/MM/yyyy'}"/>
+                    </span>
+                    <strong> hasta:</strong>
+                    <span t-if="o.l10n_ar_afip_service_end">
+                      <span t-field="o.l10n_ar_afip_service_end"  t-options="{'format': 'dd/MM/yyyy'}"/>
+                    </span>
+                  </div>
+                  <div class="col-4" t-if="o.move_type == 'out_invoice' and (o.state == 'posted' or o.state == 'paid')">
+                    <strong>Fecha Vto:</strong>
+                    <span t-if="o.invoice_date_due">
+                      <span t-field="o.invoice_date_due"/>
+                    </span>
+                    <span t-if="not o.invoice_date_due">
+                      <span t-field="o.invoice_date"/>
+                    </span>
+                  </div>
+              </div>
           </div><!--END HEADER-->
           <!--PAGE-->
-          <div class="page" style="margin-top: 0px;">
+          <div class="page" style="margin-top: 0px !important;font-size: 13px;">
+
+             <!--MY COMPANY-->
+              <div class="row m-0" style="border: 1px solid black;">
+                  <div class="col-6" style="margin-top: 8px !important;">
+                    <small>
+                      <span t-field="o.company_id.name" style="font-size: 12px; font-weight: bold;"/>
+                      <br/>
+		      <t t-if="o.company_id.partner_id.street"><span t-field="o.company_id.partner_id.street" />, </t>
+                      <t t-if="o.company_id.partner_id.city"><span t-field="o.company_id.partner_id.city" />, </t>
+                      <t t-if="o.company_id.partner_id.state_id"><span t-field="o.company_id.partner_id.state_id.name" />, </t>
+                      <t t-if="o.company_id.partner_id.country_id"><span t-field="o.company_id.partner_id.country_id.name" /></t>
+                    </small>
+                  </div>
+                  <div class="col-6">
+                    <p><br/></p>
+                    <p class="m-0"><strong>CUIT</strong> <span t-field="o.company_id.vat"/> - <span t-field="o.company_id.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
+                    <p class="m-0"><strong>Ingresos Brutos:</strong> <span t-if="o.company_id.l10n_ar_gross_income_type == 'exempt'">Exento</span> <span t-if="o.company_id.l10n_ar_gross_income_type != 'exempt'" t-field="o.company_id.l10n_ar_gross_income_number"/> <br/> <strong>Inicio de actividades:</strong> <span t-field="o.company_id.l10n_ar_afip_start_date"/></p>
+                  </div>
+              </div>
+              <!--END MY COMPANY-->
               <!-- CLIENTE  -->
-              <div class="row" style="margin-top: 45px; border: 1px solid black; border-radius: 10px;">
-                <div name="invoice_adress" class="col-6 text left;">
-                  <strong>Cliente: </strong>
-                  <span t-field="o.partner_id.name"/>
-                  <p>
-                  <strong>Dirección: </strong>
-                  <span t-field="o.partner_id.street"/>
-                  </p>
+              <div class="row m-0" style="border: 1px solid black;margin-top:2px !important;">
+                <div class="col-2">
+                  <strong><span>Cliente</span></strong>
                 </div>
-                <div name="invoice_address" class="col-6">
-                  <strong>CUIT: </strong>
-                  <span t-field="o.partner_id.vat"/>
-                  <p>
-                  <strong>Cond. de IVA: </strong>
-                  <span t-field="o.partner_id.l10n_ar_afip_responsibility_type_id.name"/>
-                  </p>
+                <div name="invoice_address" class="col-4">
+                  <small>
+                    <span t-field="o.partner_id.name" style="font-size: 12px; font-weight: bold;"/>
+                    <br/>
+                    <t t-if="o.partner_id.street"><span t-field="o.partner_id.street" />, </t>
+                    <t t-if="o.partner_id.city"><span t-field="o.partner_id.city" />, </t>
+                    <t t-if="o.partner_id.state_id"><span t-field="o.partner_id.state_id.name" />, </t>
+                    <t t-if="o.partner_id.country_id"><span t-field="o.partner_id.country_id.name" /></t>
+                  </small>
+                </div>
+                <div name="invoice_address" class="col-4">
+                  <strong>CUIT: </strong><span t-field="o.partner_id.vat"/>
+                  <p><strong>Condicion de IVA </strong><span t-field="o.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
                 </div>
               </div>
               <!-- END CLIENTE  -->
               <!-- ENCABEZADO FACTURA -->
-              <div class="row mt30 mb30" style="font-size: 13px;">
-                <div class="col-6">
-                  <strong>Vencimiento: </strong>
-                  <span t-field="o.invoice_date_due"/>
-                  <p>
+              <div class="row m-0" style="border:solid 1px #000;margin-top:2px !important;">
+                <div class="col-2" t-if="o.currency_id">
                   <strong>Moneda: </strong>
-                  <span t-field="o.currency_id.name"/>
-                  </p>
+                  <p class="m-0" t-field="o.currency_id.name"/>
                 </div>
-                <!--<div class="col-2" t-if="o.currency_id.id != o.company_id.currency_id.id">
+                <div class="col-2" t-if="o.currency_id.id != o.company_id.currency_id.id">
                   <strong>Cotiz: </strong>
                   <p class="m-0" t-field="o.l10n_ar_currency_rate"/>
-                </div>-->
-                <div class="col-6" t-if="o.invoice_origin">
-                  <strong>Origen: </strong>
-                  <span t-field="o.invoice_origin"/><br/>
-                  <span t-if="o.invoice_payment_term_id"/>
-                  <strong><span t-field="o.invoice_payment_term_id.note"/></strong>
                 </div>
+                <div class="col-2" t-if="o.invoice_origin">
+                  <strong>Origen: </strong>
+                  <p class="m-0" t-field="o.invoice_origin"/>
+                </div>
+                <div class="col-2" t-if="o.partner_id.ref">
+                  <strong>Cod. Cliente:</strong>
+                  <p class="m-0" t-field="o.partner_id.ref"/>
+                </div>
+                <!-- div name="reference" class="col-2" t-if="o.reference">
+                  <strong>Remito:</strong>
+                  <p t-field="o.reference"/>
+                </div -->
               </div>
               <!-- END ENCABEZADO FACTURA -->
               <!-- Is there a discount on at least one line? -->
               <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
               <!-- TABLA ITEMS -->
-              <table class="table table-condensed" style="font-size: 13px;">
+              <table class="table table-condensed" style="margin-top:2px !important;">
                   <thead>
                     <tr style="background: #ddd;">
-                      <!--<th style="border: solid 1px #000;padding: 8px;">Código</th>-->
+                      <th style="border: solid 1px #000;padding: 8px;">Código</th>
                       <th style="border: solid 1px #000;padding: 8px;">Producto / Servicio</th>
-                      <!--<th class="hidden" style="border: solid 1px #000;padding: 8px;">Origen</th>-->
+                      <th class="hidden" style="border: solid 1px #000;padding: 8px;">Origen</th>
                       <th class="text-right" style="border: solid 1px #000;padding: 8px;">Cantidad</th>
       <!--<div t-if="o.journal_document_type_id.document_type_id.document.l10n_ar_letter_id.name != 'B'">-->
                         <th style="border: solid 1px #000;padding: 8px;" class="text-right">Precio Unit.</th>
@@ -183,9 +166,9 @@
                   <tbody class="invoice_tbody">
                     <tr t-foreach="o.invoice_line_ids" t-as="l">
                       <t t-if="not l.display_type">
-                        <!--<td style="padding: 5px;"><span t-field="l.product_id.default_code"/></td>-->
+                        <td style="padding: 5px;"><span t-field="l.product_id.default_code"/></td>
                         <td style="padding: 5px;"><span t-field="l.product_id.name"/></td>
-                        <!--<td style="padding: 5px;" class="hidden"><span t-field="l.move_id.invoice_origin"/></td>-->
+                        <td style="padding: 5px;" class="hidden"><span t-field="l.move_id.invoice_origin"/></td>
                         <td style="padding: 5px;" class="text-right">
                             <span t-esc="'{0:,.2f}'.format(l.quantity)"/>
                             <span t-field="l.uom_id" groups="product.group_uom"/>
@@ -229,13 +212,13 @@
               </table><!-- END TABLA ITEMS -->
 
               <!--SUBTOTAL E IMPUESTOS INTEGRADOS-->
-              <div class="row mt32 mb32">
-                  <div class="col-7"/>
-                  <div class="col-4">
-                      <table class="table table-condensed">
-                          <tr class="border-black" t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
-                              <td><strong>Subtotal</strong></td>
-                              <td class="text-right">
+              <div class="row m-0" style="border: 1px solid #000;">
+                  <div class="col-7 m-9" />
+                  <div class="col-5 m-0">
+                      <table class="table table-condensed" style="border: 0 solid transparent;border-style: none;">
+                          <tr style="border: 0 solid transparent;border-style: none;" t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
+                              <td style="border: 0 solid transparent;border-style: none;"><strong>Subtotal</strong></td>
+                              <td style="border: 0 solid transparent;border-style: none;" class="text-right">
                                   <span t-field="o.amount_untaxed" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
                               </td>
                           </tr>
@@ -273,16 +256,42 @@
                   </div>
               </div><!--END SUBTOTAL E IMPUESTOS INTEGRADOS-->
 
-          <p t-if="not is_html_empty(o.narration)" class="mt-2" name="comment">
+            <!-- DO NOT REMOVE THIS TABLE. MANDATORY IN SOME COUNTRIES -->
+            <!-- IMPUESTOS CLASSIC-->
+            <!--
+            <div class="row" t-if="len(o.tax_line_ids) &gt; 0 and o.journal_document_type_id.document_type_id.document.l10n_ar_letter_id.name != 'B'">
+                <div class="col-6">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Impuesto</th>
+                                <th class="text-right">Base</th>
+                                <th class="text-right">Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.tax_line_ids" t-as="t">
+                                <td><span t-field="t.tax_id.description"/></td>
+                                <td class="text-right">
+                                    <span t-field="t.base" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="t.amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+          --> <!-- END IMPUESTOS CLASSIC -->
+
+          <p t-if="o.narration" class="mt-2">
               <strong>Comentarios:</strong>
               <span t-field="o.narration"/>
           </p>
-          <!-- Show total amount in letters for MiPyMEs document types according to the law
-          http://biblioteca.afip.gob.ar/dcp/LEY_C_027440_2018_05_09 article 5.f -->
-          <t t-if="o.l10n_latam_document_type_id.code in ['201', '202', '203', '206', '207', '208', '211', '212', '213']">
-              <strong style="font-size:13px;">Son: </strong><span style="font-size:13px;" t-esc="o.currency_id.with_context(lang='es_AR').amount_to_text(o.amount_total)"/>
-          </t>
-          <!-- RG 5003: Add legend for 'A' documents that have a Monotribuista receptor -->
+          <p t-if="o.invoice_payment_term_id" class="mt-2">
+              <span t-field="o.invoice_payment_term_id.note"/>
+          </p>
           <p class="m-0" style="font-size:13px;" t-if="o.partner_id.l10n_ar_afip_responsibility_type_id.code == '6' and o.l10n_latam_document_type_id.l10n_ar_letter == 'A'">
 				    El credito fiscal discriminado en el presente comprobante solo podrá ser computado a efectos del Régimen de Sostenimiento e Inclusión Fiscal para Pequeños Contribuyentes de la Ley Nro. 27.168
 		    	</p> 
@@ -323,7 +332,6 @@
   report_type="qweb-pdf"
   name="l10n_ar_report_fe.report_invoice_fe"
   file="l10n_ar_report_fe.report_invoice_fe"
-  paperformat="l10n_ar_report_fe.report_invoice_format"
   attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
 />
 
